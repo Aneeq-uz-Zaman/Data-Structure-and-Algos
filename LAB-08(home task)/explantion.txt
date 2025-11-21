@@ -1,0 +1,187 @@
+
+🌱 Class Overview
+
+Your header defines two classes:
+
+1. Node<T>
+
+Represents a single node in the tree.
+
+Members:
+
+T data: value stored in the node
+
+Node* left: pointer to left child
+
+Node* right: pointer to right child
+
+Constructor:
+
+Node(const T& val) : data(val), left(nullptr), right(nullptr) {}
+
+
+Initializes a node with given value, and no children.
+
+2. NodeBinaryTree<T>
+
+Represents the entire tree, managing its nodes and providing functions for creation, traversal, searching, and deletion.
+
+⚙️ Construction and Cleanup
+NodeBinaryTree()
+
+Default constructor.
+Initializes the tree with root = nullptr.
+
+~NodeBinaryTree()
+
+Destructor that calls clear() to delete all nodes and free memory.
+
+bool isEmpty() const
+
+Returns true if the tree has no nodes (i.e., root == nullptr).
+
+void clear(Node<T>* node)
+
+Private recursive helper to delete all nodes in a subtree (postorder deletion).
+
+void clear()
+
+Deletes the entire tree (calls the helper on root).
+
+🌳 Tree Building Functions
+void setRoot(const T& value)
+
+Creates a new root node with the given value.
+If a tree already exists, it clears it before creating a new root.
+
+Node<T>* setLeftChild(Node<T>* parent, const T& value)
+
+Adds a left child to the given parent node.
+Throws error if parent is null or already has a left child.
+
+Node<T>* setRightChild(Node<T>* parent, const T& value)
+
+Adds a right child to the given parent node.
+Throws error if parent is null or already has a right child.
+
+void insertLevelOrder(const T& value)
+
+Inserts a node in the first available position (level order).
+This keeps the tree roughly complete (used in array-based style trees).
+
+🔍 Search & Deletion
+Node<T>* SEARCH(const T& value) const
+
+Searches the tree level-by-level using a queue (BFS).
+Returns a pointer to the node containing the value or nullptr if not found.
+
+bool REMOVE(const T& value)
+
+Deletes a node with the given value in level-order tree fashion:
+
+Find the node to remove (target).
+
+Find the last node (deepest and rightmost).
+
+Replace target->data with last->data.
+
+Delete the last node.
+Returns true if a node was removed, otherwise false.
+
+🌼 Tree Traversals
+
+All traversal functions return a vector<T> containing node values in order.
+
+vector<T> PREORDER() const
+
+Root → Left → Right
+Visits each node in preorder (useful for copying tree structure).
+
+vector<T> INORDER() const
+
+Left → Root → Right
+Mostly used for BSTs, but still useful to explore binary trees.
+
+vector<T> POSTORDER() const
+
+Left → Right → Root
+Visits children first, then parent (used for safe deletion).
+
+vector<T> LEVELORDER() const
+
+Visits nodes level-by-level using a queue (BFS order).
+
+📏 Information Functions
+int height() const
+
+Returns the height of the tree (longest path from root to leaf).
+
+int size() const
+
+Counts total number of nodes in the tree.
+
+int countLeaves() const
+
+Counts all nodes with no children.
+
+int countNonLeaves() const
+
+Counts internal (non-leaf) nodes = size() - countLeaves().
+
+🔢 Value Analysis
+T findMin() const
+
+Finds and returns the smallest value in the tree (level-order scan).
+Works for any type supporting < or min().
+
+T findMax() const
+
+Finds and returns the largest value in the tree (level-order scan).
+Works for any type supporting > or max().
+
+👨‍👦 Parent and Path Operations
+Node<T>* findParent(const T& value) const
+
+Finds and returns the parent of a node with the given value.
+Returns nullptr if the node is the root or not found.
+
+void deleteParentOf(const T& value)
+
+Deletes the parent of a given node value (if exists).
+Internally calls REMOVE() to delete that parent.
+
+vector<T> pathToNode(const T& value) const
+
+Returns a vector showing the path from root to the node with value.
+If not found, returns an empty vector.
+
+🧾 Display Helpers
+void print(const vector<T>& v, const string& label) const
+
+Prints a traversal or path vector with a label.
+
+void printAllOrders() const
+
+Prints all four traversals (preorder, inorder, postorder, level order) one after another.
+
+🔁 Private Helper Functions
+
+These are recursive helpers used internally by the class:
+
+Function	Purpose
+preorder(Node*, vector&)	Recursive preorder traversal
+inorder(Node*, vector&)	Recursive inorder traversal
+postorder(Node*, vector&)	Recursive postorder traversal
+heightHelper(Node*)	Calculates height recursively
+countNodes(Node*)	Counts total nodes recursively
+countLeavesHelper(Node*)	Counts leaves recursively
+pathToNodeHelper(Node*, const T&, vector<T>&)	Helper to record path from root to target node
+⚡ Summary Table
+Category	Function(s)
+Build	setRoot, setLeftChild, setRightChild, insertLevelOrder
+Search & Remove	SEARCH, REMOVE
+Traversal	PREORDER, INORDER, POSTORDER, LEVELORDER
+Information	height, size, countLeaves, countNonLeaves
+Value Analysis	findMin, findMax
+Parent & Path	findParent, deleteParentOf, pathToNode
+Display	print, printAllOrders
