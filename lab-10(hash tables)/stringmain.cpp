@@ -7,8 +7,8 @@ class HashTable
 {
 private:
     string *table;
-    int S;
-    int n;
+    int S; // hash table size
+    int n; //number of element
     
 
 public:
