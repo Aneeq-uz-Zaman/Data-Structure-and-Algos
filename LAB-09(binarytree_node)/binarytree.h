@@ -61,15 +61,6 @@ public:
         }
         return *this;
     }
-    //     D:\C++\DSA\LAB-09(binarytree_node)>g++ test-node.cpp
-    // test-node.cpp: In function 'int main()':
-    // test-node.cpp:21:50: error: invalid initialization of non-const reference of type 'NodeBinaryTree<int>&' from an rvalue of type 'NodeBinaryTree<int>'
-    //      NodeBinaryTree<int> tree2=tree.getMirrorImage();
-    //                                ~~~~~~~~~~~~~~~~~~~^~
-    // In file included from test-node.cpp:1:0:
-    // binarytree.h:64:5: note:   initializing argument 1 of 'NodeBinaryTree<T>::NodeBinaryTree(NodeBinaryTree<T>&) [with T = int]'
-    //      NodeBinaryTree(NodeBinaryTree<T> &other)
-
 
     NodeBinaryTree(const NodeBinaryTree<T> &other)
     {

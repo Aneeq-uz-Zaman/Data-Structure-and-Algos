@@ -13,8 +13,6 @@ protected:
     int maxSize;
     T *data;
     bool *exists;
-   
-
 
 public:
     Binary_Tree_Array(int h = 0)
@@ -34,17 +32,19 @@ public:
         delete[] exists;
     }
 
-    int MaxSize() { 
+    int MaxSize()
+    {
         return maxSize;
-     }
-    int Height() { 
-        return height; 
+    }
+    int Height()
+    {
+        return height;
     }
 
-    bool IsEmpty() { 
+    bool IsEmpty()
+    {
         return !exists[0];
-     }
-
+    }
 
     void SetRoot(T val)
     {
@@ -86,101 +86,141 @@ public:
         }
     }
 
-    T getParent(T node) const {
+    T getParent(T node) const
+    {
         int i;
-        for(i=0;i<maxSize;i++)
+        for (i = 0; i < maxSize; i++)
         {
-            if(data[i]==int(node) && exists[i]){
+            if (data[i] == int(node) && exists[i])
+            {
                 break;
             }
-                
         }
         if (i <= 1 || i > maxSize)
             throw out_of_range("No parent");
-        return data[(i-1) / 2];
+        return data[(i - 1) / 2];
     }
 
     void displayan(T node)
     {
         int i;
-        for(i=0;i<maxSize;i++)
+        for (i = 0; i < maxSize; i++)
         {
-            if(data[i]==int(node) && exists[i]){
+            if (data[i] == int(node) && exists[i])
+            {
                 break;
             }
-                
         }
         if (i <= 1)
             throw out_of_range("No parent");
-        cout<<"anxestors of "<<node<<":";
-        while(i!=0)
+        cout << "anxestors of " << node << ":";
+        while (i != 0)
         {
-            i=(i-1) / 2;
-            cout<<"ancestor :"<< data[i]<<endl;
-            
+            i = (i - 1) / 2;
+            cout << "ancestor :" << data[i] << endl;
         }
-        
-
     }
-    void heightOfTree() 
+    void heightOfTree()
     {
-        int h=0;
-        for(int i=0;i<maxSize;i++)
+        int h = 0;
+        for (int i = 0; i < maxSize; i++)
         {
-            if(exists[i])
+            if (exists[i])
             {
-                int level=0;
-                int j=i;
-                while(j!=0)
+                int level = 0;
+                int j = i;
+                while (j != 0)
                 {
                     level++;
-                    j=(j-1)/2;
+                    j = (j - 1) / 2;
                 }
-                if(level>h)
-                    h=level;
+                if (level > h)
+                    h = level;
             }
         }
-        cout<< h+1;
-
+        cout << h + 1;
     }
-
     void displayde(T node)
     {
+        // Find index of the node
         int i;
-        for(i=0;i<maxSize;i++)
+        for (i = 0; i < maxSize; i++)
         {
-            if(data[i]==int(node) && exists[i]){
+            if (exists[i] && data[i] == node)
                 break;
-            }
-                
         }
-        if (!exists[2*i+1])
-            throw out_of_range("No left chil exist");
-        cout<<"Left Descendent of"<<node<<":"<<data[2*i+1];
-        if (!exists[2*i+2])
-            throw out_of_range("No right chil exist");
-        cout<<"Left Descendent of"<<node<<":"<<data[2*i+2];
+        if (i >= maxSize || !exists[i])
+            throw out_of_range("Node not found");
 
+        cout << "descendants of " << node << ":";
+
+        // BFS to print all descendants (not just immediate children)
+        queue<int> q;
+        int left = 2 * i + 1;
+        int right = 2 * i + 2;
+        if (left < maxSize && exists[left])
+            q.push(left);
+        if (right < maxSize && exists[right])
+            q.push(right);
+
+        if (q.empty())
+        {
+            cout << " none";
+            return;
+        }
+
+        while (!q.empty())
+        {
+            int idx = q.front();
+            q.pop();
+
+            cout << " " << data[idx];
+
+            int l = 2 * idx + 1;
+            int r = 2 * idx + 2;
+
+            if (l < maxSize && exists[l])
+                q.push(l);
+            if (r < maxSize && exists[r])
+                q.push(r);
+        }
     }
+    // void displayde(T node)
+    // {
+    //     int i;
+    //     for(i=0;i<maxSize;i++)
+    //     {
+    //         if(data[i]==int(node) && exists[i]){
+    //             break;
+    //         }
+
+    //     }
+    //     if (!exists[2*i+1])
+    //         throw out_of_range("No left chil exist");
+    //     cout<<"Left Descendent of"<<node<<":"<<data[2*i+1];
+    //     if (!exists[2*i+2])
+    //         throw out_of_range("No right chil exist");
+    //     cout<<"Left Descendent of"<<node<<":"<<data[2*i+2];
+
+    // }
     void remove(T node)
     {
         int i;
-        for(i=0;i<maxSize;i++)
+        for (i = 0; i < maxSize; i++)
         {
-            if(data[i]==int(node) && exists[i]){
+            if (data[i] == int(node) && exists[i])
+            {
                 break;
             }
-                
         }
 
-        if(i>=maxSize || !exists[i])
+        if (i >= maxSize || !exists[i])
             return;
-        remove(data[2*i+1]);
-        remove(data[2*i+2]);
-        exists[i]=false;
-        
+        remove(data[2 * i + 1]);
+        remove(data[2 * i + 2]);
+        exists[i] = false;
     }
-    
+
     void PreOrder(int i = 0)
     {
         if (i >= maxSize || !exists[i])
@@ -231,7 +271,7 @@ public:
         }
     }
 
-    void displayLevel(int levelNo) 
+    void displayLevel(int levelNo)
     {
         if (levelNo < 1 || levelNo > height)
             throw out_of_range("Invalid level number");
@@ -240,43 +280,31 @@ public:
         int end = pow(2, levelNo) - 2;
 
         cout << "Nodes at level " << levelNo << ": ";
-        for (int i = start; i <= end ; i++)
+        for (int i = start; i <= end; i++)
         {
             if (exists[i])
                 cout << data[i] << " ";
         }
-
     }
     int findLevelOfNode(T node)
     {
         int i;
-        for(i=0;i<maxSize;i++)
+        for (i = 0; i < maxSize; i++)
         {
-            if(data[i]==int(node) && exists[i]){
+            if (data[i] == int(node) && exists[i])
+            {
                 break;
             }
-                
         }
-        int j=1;
-        while(i!=0)
+        int j = 1;
+        while (i != 0)
         {
             j++;
-            i=(i-1)/2;
+            i = (i - 1) / 2;
         }
         return j;
-        
     }
-    
-
-
-   
-   
-
-    
-
-
 };
-
 
 int main()
 {
@@ -297,20 +325,20 @@ int main()
     tree.PostOrder();
     cout << "\nLevelOrder: ";
     tree.LevelOrder();
-    cout<<endl;
-    int r=tree.getParent(5);
-    cout<<"parent of 5:"<<r;
-    cout<<endl;
+    cout << endl;
+    int r = tree.getParent(5);
+    cout << "parent of 5:" << r;
+    cout << endl;
     tree.displayan(4);
-    cout<<endl;
+    cout << endl;
     tree.displayde(3);
-    cout<<endl;
-    int x=tree.findLevelOfNode(4);
-    cout<<"LEvel of 4:"<<x<<endl;
+    cout << endl;
+    int x = tree.findLevelOfNode(4);
+    cout << "LEvel of 4:" << x << endl;
     tree.heightOfTree();
-    cout<<endl;
+    cout << endl;
     tree.displayLevel(2);
-    cout<<endl;
+    cout << endl;
     tree.remove(2);
     tree.LevelOrder();
     return 0;
